@@ -1,0 +1,19 @@
+#ddp-inspector-button {
+  padding: 5px;
+  border-radius: 5px;
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+#ddp-inspector-button.active {
+  border: 1px solid #398439;
+  background: #449d44;
+}
+
+#ddp-inspector-button.inactive {
+  border: 1px solid #ac2925;
+  background: #c9302c;
+}
