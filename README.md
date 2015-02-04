@@ -22,7 +22,8 @@ This package was made using the code from this [StackOverflow post](http://stack
 
 ## Future
 
-Filtering of DDP messages to certain subscriptions.
+- Persistent active/inactive state through manual reloads (it already keep state in hot code reloads).
+- Filtering of DDP messages by subscriptions.
 
 ## Feedback welcome
 
