@@ -2,18 +2,16 @@ var DDP_INSPECTOR_PREFIX = 'lai:ddp-inspector';
 var DDP_INSPECTOR_SESSION_ACTIVE_KEY = DDP_INSPECTOR_PREFIX.concat('.active');
 var DDP_INSPECTOR_BUTTON_ID = '#ddp-inspector-button';
 
-Session.setDefault(DDP_INSPECTOR_SESSION_ACTIVE_KEY, true);
-
 // Unfortunately, a debugOnly package doesn't get to export vars
 DDPInspector = {
   turnOn: function () {
-    Session.set(DDP_INSPECTOR_SESSION_ACTIVE_KEY, true);
+    Session.setPersistent(DDP_INSPECTOR_SESSION_ACTIVE_KEY, true);
   },
   turnOff: function () {
-    Session.set(DDP_INSPECTOR_SESSION_ACTIVE_KEY, false);
+    Session.setPersistent(DDP_INSPECTOR_SESSION_ACTIVE_KEY, false);
   },
   toggleActive: function () {
-    Session.set(DDP_INSPECTOR_SESSION_ACTIVE_KEY, !Session.get(DDP_INSPECTOR_SESSION_ACTIVE_KEY));
+    Session.setPersistent(DDP_INSPECTOR_SESSION_ACTIVE_KEY, !Session.get(DDP_INSPECTOR_SESSION_ACTIVE_KEY));
   },
   show: function () {
     $(DDP_INSPECTOR_BUTTON_ID).show();
@@ -48,6 +46,7 @@ tpl.events({
 });
 
 Meteor.startup(function () {
+  Session.setDefaultPersistent(DDP_INSPECTOR_SESSION_ACTIVE_KEY, true);
   Blaze.render(tpl, document.body);
 });
 
