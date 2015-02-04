@@ -1,6 +1,6 @@
 ## DDP Inspector
 
-This is a __client-side__ DDP inspector that will capture all DDP activity in your browser console. You've heard the phrase "data over the wire", but have you seen what that data looks like? This will show you. _This package will not be compiled into production_.
+This is a __client-side__ DDP inspector that will capture all DDP activity in your browser console. You've heard the phrase "data over the wire", but have you seen what that data looks like? This will show you. __This package will not be compiled into production__.
 
 ## Installation
 
