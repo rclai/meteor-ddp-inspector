@@ -43,6 +43,7 @@ tpl.helpers({
 tpl.events({
   'click button': function (event, template) {
     DDPInspector.toggleActive();
+    event.stopImmediatePropagation();
   }
 });
 
