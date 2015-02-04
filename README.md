@@ -12,6 +12,8 @@ meteor add lai:ddp-inspector
 
 Open up your browser console and just see the logs pour through. Click Inspect DDP button (bottom left) to turn DDP logging on or off.
 
+![alt tag](https://raw.github.com/rclai/meteor-ddp-inspector/master/screenshot.png)
+
 ## More Info
 
 There's a toggle button (at the bottom left corner fixed by default), you can use CSS to make it display however/wherever you want. The button has an id of `ddp-inspector-button` and toggle classes of `active` and `inactive`.
