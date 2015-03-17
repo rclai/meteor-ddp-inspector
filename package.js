@@ -16,7 +16,7 @@ Package.onUse(function(api) {
 
   api.use([
     'templating',
-    'u2622:persistent-session@0.2.2',
+    'u2622:persistent-session@0.3.1',
     'jquery'
   ]);
 
