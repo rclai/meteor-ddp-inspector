@@ -24,6 +24,8 @@ This package was made using the code from this [StackOverflow post](http://stack
 
 * [x] Persistent active/inactive state through manual reloads (it already keep state in hot code reloads).
 * [ ] Filtering of DDP messages by subscriptions.
+* [ ] UI Panel
+* [ ] Hot key toggle
 
 ## Feedback welcome
 
