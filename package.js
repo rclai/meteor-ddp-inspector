@@ -1,6 +1,6 @@
 Package.describe({
   name: 'lai:ddp-inspector',
-  version: '0.0.5',
+  version: '0.0.6',
   // Brief, one-line summary of the package.
   summary: 'Allows you to see all DDP activity in the client-side.',
   // URL to the Git repository containing the source code for this package.
@@ -16,6 +16,7 @@ Package.onUse(function(api) {
 
   api.use([
     'templating',
+    'session',
     'u2622:persistent-session@0.3.1',
     'jquery'
   ]);
