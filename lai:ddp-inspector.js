@@ -1,46 +1,8 @@
 var DDP_INSPECTOR_PREFIX = 'lai:ddp-inspector';
 var DDP_INSPECTOR_SESSION_ACTIVE_KEY = DDP_INSPECTOR_PREFIX.concat('.active');
-var DDP_INSPECTOR_BUTTON_ID = '#ddp-inspector-button';
 var DDP_INSPECTOR_PANEL_ID = '#ddp-inspector-panel';
 
-// Unfortunately, a debugOnly package doesn't get to export vars
-DDPInspector = {
-  turnOn: function () {
-    Session.set(DDP_INSPECTOR_SESSION_ACTIVE_KEY, true);
-  },
-  turnOff: function () {
-    Session.set(DDP_INSPECTOR_SESSION_ACTIVE_KEY, false);
-  },
-  toggleActive: function () {
-    Session.set(DDP_INSPECTOR_SESSION_ACTIVE_KEY, !Session.get(DDP_INSPECTOR_SESSION_ACTIVE_KEY));
-  },
-  show: function () {
-    $(DDP_INSPECTOR_BUTTON_ID).show();
-    $(DDP_INSPECTOR_PANEL_ID).show();
-    this.turnOn();
-  },
-  hide: function () {
-    $(DDP_INSPECTOR_BUTTON_ID).hide();
-    $(DDP_INSPECTOR_PANEL_ID).show();
-    this.turnOff();
-  },
-  toggleDisplay: function () {
-    $(DDP_INSPECTOR_BUTTON_ID).toggle();
-    $(DDP_INSPECTOR_PANEL_ID).toggle();
-    this.toggleActive();
-  },
-  isVisible: function () {
-    return $(DDP_INSPECTOR_BUTTON_ID).is(':visible');
-  },
-  isActive: function () {
-    return Session.equals(DDP_INSPECTOR_SESSION_ACTIVE_KEY, true);
-  }
-};
-
 Template[DDP_INSPECTOR_PREFIX].helpers({
-  btnClass: function () {
-    return DDPInspector.isActive() ? 'active' : 'inactive';
-  },
   searchInput: function () {
     return Session.get(DDP_INSPECTOR_PREFIX + '.search');
   },
@@ -90,10 +52,6 @@ Template[DDP_INSPECTOR_PREFIX].events({
     throttleHandle = setTimeout(function () {
       Session.setPersistent(DDP_INSPECTOR_PREFIX + '.search', event.target.value);
     }, 300);
-  },
-  'click button': function (event, template) {
-    DDPInspector.toggleActive();
-    event.stopImmediatePropagation();
   }
 });
 
@@ -136,7 +94,7 @@ Meteor.startup(function () {
   Blaze.render(Template[DDP_INSPECTOR_PREFIX], document.body);
   // Initialize hot-key
   Mousetrap.bind(['command+d', 'ctrl+d'], function () {
-    DDPInspector.toggleDisplay();
+    $(DDP_INSPECTOR_PANEL_ID).toggle();
     return false;
   });
 });

@@ -1,6 +1,6 @@
 Package.describe({
   name: 'lai:ddp-inspector',
-  version: '1.0.0',
+  version: '1.0.1',
   // Brief, one-line summary of the package.
   summary: 'See all DDP activity in the client-side and full-text search them.',
   // URL to the Git repository containing the source code for this package.
@@ -33,8 +33,6 @@ Package.onUse(function(api) {
     'lai:ddp-inspector.css',
     'lai:ddp-inspector.js'
   ], ['client']);
-
-  api.export('DDPMessages', 'client');
 });
 
 Package.onTest(function(api) {
