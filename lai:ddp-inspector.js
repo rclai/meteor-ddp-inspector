@@ -132,6 +132,7 @@ DDPMessages = new Mongo.Collection(null);
 Meteor.startup(function () {
   Session.setDefaultPersistent(DDP_INSPECTOR_SESSION_ACTIVE_KEY, true);
   Session.setDefaultPersistent(DDP_INSPECTOR_PREFIX + '.suppressPing', true);
+  Session.setDefaultPersistent(DDP_INSPECTOR_PREFIX + '.console', false);
   Blaze.render(Template[DDP_INSPECTOR_PREFIX], document.body);
   // Initialize hot-key
   Mousetrap.bind(['command+d', 'ctrl+d'], function () {
@@ -144,27 +145,27 @@ var _send = Meteor.connection._send;
 var counter = 0;
 
 Meteor.connection._send = function (obj) {
-  if (DDPInspector.isActive()) {
-    DDPMessages.insert({
-      message: obj,
-      messageStr: JSON.stringify(obj, null, '  '),
-      __type: 'sent',
-      __order: counter++
-    });
-    //console.log("Sent:\n", obj);
+  DDPMessages.insert({
+    message: obj,
+    messageStr: JSON.stringify(obj, null, '  '),
+    __type: 'sent',
+    __order: counter++
+  }, function () {});
+  if (Session.equals(DDP_INSPECTOR_PREFIX + '.console', true)) {
+    console.log("Sent:\n", obj);
   }
-  _send.call(this, obj);
+_send.call(this, obj);
 };
 
 Meteor.connection._stream.on('message', function (message) { 
-  if (DDPInspector.isActive()) {
-    var obj = JSON.parse(message);
-    DDPMessages.insert({
-      message: obj,
-      messageStr: JSON.stringify(obj, null, '  '),
-      __type: 'receive',
-      __order: counter++
-    });
-    //console.log("Received:\n", obj); 
+  var obj = JSON.parse(message);
+  DDPMessages.insert({
+    message: obj,
+    messageStr: JSON.stringify(obj, null, '  '),
+    __type: 'receive',
+    __order: counter++
+  }, function () {});
+  if (Session.equals(DDP_INSPECTOR_PREFIX + '.console', true)) {
+    console.log("Received:\n", obj); 
   }
 });
