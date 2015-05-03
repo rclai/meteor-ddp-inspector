@@ -23,7 +23,7 @@ This package was made using the code from this [StackOverflow post](http://stack
 ## Future
 
 * [x] Persistent active/inactive state through manual reloads (it already keep state in hot code reloads).
-* [x] Filtering of DDP messages by subscriptions.
+* [x] Full text search the DDP messages
 * [x] UI Panel
 * [x] Hot key toggle
 * [ ] Use tokens to have more granular search
