@@ -1,6 +1,6 @@
 Package.describe({
   name: 'lai:ddp-inspector',
-  version: '0.0.5',
+  version: '1.0.0',
   // Brief, one-line summary of the package.
   summary: 'Allows you to see all DDP activity in the client-side.',
   // URL to the Git repository containing the source code for this package.
@@ -15,10 +15,17 @@ Package.onUse(function(api) {
   api.versionsFrom('1.0');
 
   api.use([
+    'mongo',
+    'tracker',
     'templating',
-    'u2622:persistent-session@0.3.1',
+    'session',
+    'u2622:persistent-session@0.3.3',
+    'underscore',
+    'mousetrap:mousetrap@1.4.6_1',
     'jquery'
   ]);
+
+  api.imply('mousetrap:mousetrap', 'client');
 
   api.addFiles([
     'console-log-polyfill.js',
@@ -27,6 +34,7 @@ Package.onUse(function(api) {
     'lai:ddp-inspector.js'
   ], ['client']);
 
+  api.export('DDPMessages', 'client');
 });
 
 Package.onTest(function(api) {

@@ -3,7 +3,7 @@
   border-radius: 5px;
   position: fixed;
   bottom: 5px;
-  left: 5px;
+  right: 5px;
   color: white;
   cursor: pointer;
   z-index: 9999;
@@ -18,4 +18,43 @@
 #ddp-inspector-button.inactive {
   border: 1px solid #ac2925;
   background: #c9302c;
+}
+
+#ddp-inspector-panel, #ddp-inspector-panel * {
+  box-sizing: border-box;
+  font-family: 'Arial';
+}
+
+#ddp-inspector-panel {
+  position: fixed;
+  top: 30px;
+  left: 0;
+  bottom: 0;
+  width: 25%;
+  overflow: auto;
+  background: #dddddd;
+  font-size: 12px;
+  opacity: 0.9;
+  z-index: 10000000000;
+}
+
+.ddp-message {
+  padding: 5px;
+  background: #f1f1f1;
+  margin-bottom: 3px;
+  max-height: 200px;
+  overflow: hidden;
+}
+
+.ddp-message:hover {
+  background: #d1d1d1;
+  max-height: 9000px;
+}
+
+#ddp-inspector-search {
+  width: 25%;
+  position: fixed;
+  top: 0;
+  height: 30px;
+  left: 0;
 }

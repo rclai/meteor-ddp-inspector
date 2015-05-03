@@ -1,3 +1,38 @@
 <template name="lai:ddp-inspector">
   <button id="ddp-inspector-button" class="{{btnClass}}">Inspect DDP</button>
+  <div id="ddp-inspector-panel">
+    <input id="ddp-inspector-search" value="{{searchInput}}" placeholder="Search for any DDP message..." type="text">
+    {{#each ddpMessages}}
+      <div class="ddp-message">
+        {{> whichDDPTemplate}}
+      </div>
+    {{else}}
+      <p class="ddp-message">No DDP Messages... yet.</p>
+    {{/each}}
+  </div>
+</template>
+
+<template name="lai:ddp-inspector:collection">
+  <strong>Collection:</strong>
+  {{message.collection}} -
+  {{message.msg}}
+  <br>
+  <pre>{{messageStr}}</pre>
+</template>
+
+<template name="lai:ddp-inspector:method">
+  <strong>Method:</strong>
+  {{methodName}}
+  <br>
+  <pre>{{messageStr}}</pre>
+</template>
+
+<template name="lai:ddp-inspector:subscription">
+  <strong>Subscription:</strong>
+  {{subscriptionName}}
+  <pre>{{messageStr}}</pre>
+</template>
+
+<template name="lai:ddp-inspector:unknown">
+  <pre>{{messageStr}}</pre>
 </template>
