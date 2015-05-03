@@ -13,6 +13,8 @@ meteor add lai:ddp-inspector
 Press (Ctrl/Cmd) + D to toggle panel on the left.
 Search for any DDP message (uses regex searching of a local collection).
 
+![alt tag](https://raw.github.com/rclai/meteor-ddp-inspector/master/screenshot.png)
+
 ## More Info
 
 The panel will only show you 50 DDP messages at a time, the most recent ones first. 
