@@ -10,13 +10,22 @@ meteor add lai:ddp-inspector
 
 ## Usage
 
-Open up your browser console and just see the logs pour through. Click Inspect DDP button (bottom left) to turn DDP logging on or off.
-
-![alt tag](https://raw.github.com/rclai/meteor-ddp-inspector/master/screenshot.png)
+Press (Ctrl/Cmd) + D to toggle panel on the left.
+Search for any DDP message (uses regex searching of a local collection).
 
 ## More Info
 
-There's a toggle button (at the bottom left corner fixed by default), you can use CSS to make it display however/wherever you want. The button has an id of `ddp-inspector-button` and toggle classes of `active` and `inactive`.
+The panel will only show you 50 DDP messages at a time, the most recent ones first. 
+
+If you want to see more DDP messages, simply call `Session.setPersistent('lai:ddp-inspector.limit', YouDesiredNumber);`.
+
+If you reload, your search will remain in the search box. However, your DDP messages will be gone.
+
+By default, the DDP messages are not logged to the console, if you still would like to see them in the console, simply call `Session.setPersistent('lai:ddp-inspector.console', true)`.
+
+If you want the old school version that only outputs to the console, `meteor add lai:ddp-inspector@0.6.0`.
+
+## Credit
 
 This package was made using the code from this [StackOverflow post](http://stackoverflow.com/a/25373867/620010).
 
