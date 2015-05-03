@@ -2,7 +2,7 @@ Package.describe({
   name: 'lai:ddp-inspector',
   version: '1.0.0',
   // Brief, one-line summary of the package.
-  summary: 'Allows you to see all DDP activity in the client-side.',
+  summary: 'See all DDP activity in the client-side and full-text search them.',
   // URL to the Git repository containing the source code for this package.
   git: 'https://github.com/rclai/meteor-ddp-inspector.git',
   // By default, Meteor will default to using README.md for documentation.
