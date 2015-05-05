@@ -92,6 +92,9 @@ Template[DDP_INSPECTOR_PREFIX].helpers({
   },
   ddpMessages: function () {
     updatePanelTracker.depend();
+    // No other way to trigger reactivity for the other session vars
+    Session.get(DDP_INSPECTOR_PREFIX + '.limit');
+    Session.get(DDP_INSPECTOR_PREFIX + '.suppressPing');
     return Template.instance().messages;
   },
   whichDDPTemplate: function () {
