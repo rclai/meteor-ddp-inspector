@@ -25,6 +25,8 @@ By default, the DDP messages are not logged to the console, if you still would l
 
 If you want the old school version that only outputs to the console, `meteor add lai:ddp-inspector@0.6.0`.
 
+The Reset button is there to clear the local collection of DDP messages in case it gets too big. Clearing it will speed up the search. I am still trying to figure out how to optimize the performance.
+
 ## Credit
 
 This package was made using the code from this [StackOverflow post](http://stackoverflow.com/a/25373867/620010).
