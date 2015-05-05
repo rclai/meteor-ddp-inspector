@@ -30,7 +30,7 @@
   margin-bottom: 3px;
   max-height: 200px;
   overflow: hidden;
-  transition: 3s;
+  transition: background-color 3s, max-height 0.1s;
 }
 
 .ddp-message.inserted {
