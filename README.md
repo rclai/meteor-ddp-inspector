@@ -35,6 +35,7 @@ This package was made using the code from this [StackOverflow post](http://stack
 * [x] Full text search the DDP messages
 * [x] UI Panel
 * [x] Hot key toggle
+* [x] Throttle re-rendering to improve performance of panel
 * [ ] Use tokens to have more granular search
 * [ ] Limit changing ability
 
