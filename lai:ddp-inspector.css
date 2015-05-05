@@ -24,13 +24,23 @@
   z-index: 10000000000;
 }
 
+#ddp-inspector-panel pre {
+  padding: 0;
+  border: 0;
+  background: none;
+  line-height: 1;
+  overflow-y: hidden;
+  margin: 0;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
 .ddp-message {
   padding: 5px;
   background: #f1f1f1;
   margin-bottom: 3px;
   max-height: 200px;
   overflow: hidden;
-  transition: background-color 3s, max-height 0.1s;
+  transition: 3s;
 }
 
 .ddp-message.inserted {
