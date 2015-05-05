@@ -1,0 +1,51 @@
+#ddp-inspector-reset {
+  position: fixed;
+  left: 20%;
+  top: 0;
+  height: 30px;
+  width: 5%;
+}
+
+#ddp-inspector-panel, #ddp-inspector-panel * {
+  box-sizing: border-box;
+  font-family: 'Arial';
+}
+
+#ddp-inspector-panel {
+  position: fixed;
+  top: 30px;
+  left: 0;
+  bottom: 0;
+  width: 25%;
+  overflow: auto;
+  background: #dddddd;
+  font-size: 12px;
+  opacity: 0.9;
+  z-index: 10000000000;
+}
+
+.ddp-message {
+  padding: 5px;
+  background: #f1f1f1;
+  margin-bottom: 3px;
+  max-height: 200px;
+  overflow: hidden;
+  transition: 3s;
+}
+
+.ddp-message.inserted {
+  background: #BBFDBB;
+}
+
+.ddp-message:hover {
+  background: #d1d1d1;
+  max-height: 9000px;
+}
+
+#ddp-inspector-search {
+  width: 20%;
+  position: fixed;
+  top: 0;
+  height: 30px;
+  left: 0;
+}
