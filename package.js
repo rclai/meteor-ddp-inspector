@@ -25,8 +25,6 @@ Package.onUse(function(api) {
     'jquery'
   ]);
 
-  api.imply('mousetrap:mousetrap', 'client');
-
   api.addFiles([
     'console-log-polyfill.js',
     'lai:ddp-inspector.html',
