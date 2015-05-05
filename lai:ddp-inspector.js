@@ -21,7 +21,6 @@ Meteor.connection._send = function (obj) {
   DDPMessages.insert({
     message: obj,
     messageStr: JSON.stringify(obj, null, '  '),
-    __type: 'sent',
     __order: counter++
   }, function () {});
   if (Session.equals(DDP_INSPECTOR_PREFIX + '.console', true)) {
@@ -38,7 +37,6 @@ Meteor.connection._stream.on('message', function (message) {
   DDPMessages.insert({
     message: obj,
     messageStr: JSON.stringify(obj, null, '  '),
-    __type: 'receive',
     __order: counter++
   }, function () {});
   if (Session.equals(DDP_INSPECTOR_PREFIX + '.console', true)) {
@@ -135,7 +133,7 @@ Template[DDP_INSPECTOR_PREFIX + ':subscription'].helpers({
     if (message.name) {
       return message.name;
     } else if (message.subs) {
-      return DDPMessages.find({ 'message.msg': 'sub', 'message.id': { $in: message.subs } }, { limit: message.subs.length }).map(function (msg) {
+      return DDPMessages.find({ 'message.msg': 'sub', 'message.id': { $in: message.subs } }, { limit: message.subs.length, reactive: false }).map(function (msg) {
         return msg.message.name;
       });
     }
@@ -148,11 +146,11 @@ Template[DDP_INSPECTOR_PREFIX + ':method'].helpers({
     if (message.method) {
       return message.method;
     } else if (message.methods) {
-      return DDPMessages.find({ 'message.msg': 'method', 'message.id': { $in: message.methods } }, { limit: message.methods.length }).map(function (msg) {
+      return DDPMessages.find({ 'message.msg': 'method', 'message.id': { $in: message.methods } }, { limit: message.methods.length, reactive: false }).map(function (msg) {
         return msg.message.method;
       });
     } else if (message.msg === 'result' && message.id) {
-      return DDPMessages.findOne({ 'message.msg': 'method', 'message.id': message.id }).message.method;
+      return DDPMessages.findOne({ 'message.msg': 'method', 'message.id': message.id }, { reactive: false }).message.method;
     }
   }
 });
