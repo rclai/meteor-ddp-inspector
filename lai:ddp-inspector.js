@@ -1,12 +1,56 @@
 var DDP_INSPECTOR_PREFIX = 'lai:ddp-inspector';
 var DDP_INSPECTOR_SESSION_ACTIVE_KEY = DDP_INSPECTOR_PREFIX.concat('.active');
 var DDP_INSPECTOR_PANEL_ID = '#ddp-inspector-panel';
+var updatePanelTracker = new Tracker.Dependency();
+var ddpThrottle = null;
+var throttleDDP = function () {
+  if (ddpThrottle) {
+    clearTimeout(ddpThrottle);
+  }
+  ddpThrottle = setTimeout(function () {
+    updatePanelTracker.changed();
+  }, 300);
+};
+var _send = Meteor.connection._send;
+var counter = 0;
 
-Template[DDP_INSPECTOR_PREFIX].helpers({
-  searchInput: function () {
-    return Session.get(DDP_INSPECTOR_PREFIX + '.search');
-  },
-  ddpMessages: function () {
+Meteor.connection._send = function (obj) {
+  if (obj.msg !== 'ping' && obj.msg !== 'pong') {
+    throttleDDP();
+  }
+  DDPMessages.insert({
+    message: obj,
+    messageStr: JSON.stringify(obj, null, '  '),
+    __type: 'sent',
+    __order: counter++
+  }, function () {});
+  if (Session.equals(DDP_INSPECTOR_PREFIX + '.console', true)) {
+    console.log("Sent:\n", obj);
+  }
+  _send.call(this, obj);
+};
+
+Meteor.connection._stream.on('message', function (message) { 
+  var obj = JSON.parse(message);
+  if (obj.msg !== 'ping' && obj.msg !== 'pong') {
+    throttleDDP();
+  }
+  DDPMessages.insert({
+    message: obj,
+    messageStr: JSON.stringify(obj, null, '  '),
+    __type: 'receive',
+    __order: counter++
+  }, function () {});
+  if (Session.equals(DDP_INSPECTOR_PREFIX + '.console', true)) {
+    console.log("Received:\n", obj); 
+  }
+});
+
+Template[DDP_INSPECTOR_PREFIX].created = function () {
+  var self = this;
+  self.messages = [];
+  self.autorun(function () {
+    updatePanelTracker.depend();
     var criteria = {};
     var search = Session.get(DDP_INSPECTOR_PREFIX + '.search');
     if (search) {
@@ -26,7 +70,29 @@ Template[DDP_INSPECTOR_PREFIX].helpers({
     }
     var sessionLimit = Session.get(DDP_INSPECTOR_PREFIX + '.limit');
     var limit = typeof sessionLimit === 'number' ? sessionLimit : 50;
-    return DDPMessages.find(criteria, { sort: { __order: -1 }, limit: limit });
+    self.messages = DDPMessages.find(criteria, { sort: { __order: -1 }, limit: limit, reactive: false }).fetch();
+  });
+};
+
+Template[DDP_INSPECTOR_PREFIX].rendered = function () {
+  this.find(DDP_INSPECTOR_PANEL_ID)._uihooks = {
+    insertElement: function (node, next) {
+      $(node).addClass('inserted').insertBefore(next);
+
+      setTimeout( function () {
+        $(node).removeClass('inserted');
+      }, 20);
+    },
+  }
+};
+
+Template[DDP_INSPECTOR_PREFIX].helpers({
+  searchInput: function () {
+    return Session.get(DDP_INSPECTOR_PREFIX + '.search');
+  },
+  ddpMessages: function () {
+    updatePanelTracker.depend();
+    return Template.instance().messages;
   },
   whichDDPTemplate: function () {
     var message = this.message;
@@ -51,6 +117,7 @@ Template[DDP_INSPECTOR_PREFIX].events({
     }
     throttleHandle = setTimeout(function () {
       Session.setPersistent(DDP_INSPECTOR_PREFIX + '.search', event.target.value);
+      updatePanelTracker.changed();
     }, 300);
   }
 });
@@ -78,9 +145,7 @@ Template[DDP_INSPECTOR_PREFIX + ':method'].helpers({
         return msg.message.method;
       });
     } else if (message.msg === 'result' && message.id) {
-      return DDPMessages.find({ 'message.msg': 'method', 'message.id': message.id }).map(function (msg) {
-        return msg.message.method;
-      });
+      return DDPMessages.findOne({ 'message.msg': 'method', 'message.id': message.id }).message.method;
     }
   }
 });
@@ -97,33 +162,4 @@ Meteor.startup(function () {
     $(DDP_INSPECTOR_PANEL_ID).toggle();
     return false;
   });
-});
-
-var _send = Meteor.connection._send;
-var counter = 0;
-
-Meteor.connection._send = function (obj) {
-  DDPMessages.insert({
-    message: obj,
-    messageStr: JSON.stringify(obj, null, '  '),
-    __type: 'sent',
-    __order: counter++
-  }, function () {});
-  if (Session.equals(DDP_INSPECTOR_PREFIX + '.console', true)) {
-    console.log("Sent:\n", obj);
-  }
-_send.call(this, obj);
-};
-
-Meteor.connection._stream.on('message', function (message) { 
-  var obj = JSON.parse(message);
-  DDPMessages.insert({
-    message: obj,
-    messageStr: JSON.stringify(obj, null, '  '),
-    __type: 'receive',
-    __order: counter++
-  }, function () {});
-  if (Session.equals(DDP_INSPECTOR_PREFIX + '.console', true)) {
-    console.log("Received:\n", obj); 
-  }
 });

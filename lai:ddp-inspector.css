@@ -44,6 +44,11 @@
   margin-bottom: 3px;
   max-height: 200px;
   overflow: hidden;
+  transition: 3s;
+}
+
+.ddp-message.inserted {
+  background: #BBFDBB;
 }
 
 .ddp-message:hover {
