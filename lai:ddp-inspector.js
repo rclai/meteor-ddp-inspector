@@ -122,6 +122,10 @@ Template[DDP_INSPECTOR_PREFIX].events({
       Session.setPersistent(DDP_INSPECTOR_PREFIX + '.search', event.target.value);
       updatePanelTracker.changed();
     }, 300);
+  },
+  'click #ddp-inspector-reset': function () {
+    DDPMessages.remove({});
+    updatePanelTracker.changed();
   }
 });
 
