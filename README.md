@@ -40,6 +40,7 @@ This package was made using the code from this [StackOverflow post](http://stack
 * [x] Throttle re-rendering to improve performance of panel
 * [ ] Use tokens to have more granular search
 * [ ] Limit changing ability
+* [ ] Possible use of Clusterize.js to show huge amounts of DDP messages with no performance implications
 
 ## Feedback welcome
 
