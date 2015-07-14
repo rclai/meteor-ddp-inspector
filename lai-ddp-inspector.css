@@ -77,25 +77,26 @@
   white-space: pre-wrap;	
 }
 
-#Constellation input.ddp-inspector-search {
+#Constellation input.ddp-inspector-search, #Constellation input.ddp-inspector-reset {
   height: inherit !important;
   color: rgba(0,0,0,0.92);
-  width: 240px;	
+  width: 80%;	
   left: auto;
   top: auto;
   font-size: smaller !important;
-  padding-left: 5px !important;
+  padding: 0 !important;
   float: left;
+  border-radius: 0;
 }
 
 #Constellation input.ddp-inspector-reset {
-  height: inherit !important;
-  color: rgba(0,0,0,0.92);
-  width: 48px;
-  left: auto;
-  top: auto;
-  font-size: smaller !important;
+  width: 20%;
   float: right;
+  transition: 0.3s;
+}
+
+#Constellation input.ddp-inspector-reset:hover {
+  opacity: 0.9;
 }
 
 #Constellation .ddp-message {
