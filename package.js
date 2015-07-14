@@ -22,19 +22,21 @@ Package.onUse(function(api) {
     'u2622:persistent-session@0.3.3',
     'underscore',
     'mousetrap:mousetrap@1.4.6_1',
-    'jquery'
+    'jquery',
+	'reactive-dict'
   ]);
+  api.use('constellation:console@1.0.4', {weak: true});
 
   api.addFiles([
     'console-log-polyfill.js',
-    'lai:ddp-inspector.html',
-    'lai:ddp-inspector.css',
-    'lai:ddp-inspector.js'
+    'lai-ddp-inspector.html',
+    'lai-ddp-inspector.css',
+    'lai-ddp-inspector.js'
   ], ['client']);
 });
 
 Package.onTest(function(api) {
   api.use('tinytest');
   api.use('lai:ddp-inspector');
-  api.addFiles('lai:ddp-inspector-tests.js');
+  api.addFiles('lai-ddp-inspector-tests.js');
 });

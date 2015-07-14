@@ -1,6 +1,24 @@
+// Plug in to Constellation UI if Constellation is available
+
+if (!!Package["constellation:console"]) {
+  
+  var Constellation = Package["constellation:console"].API;
+    
+  Constellation.addTab({
+    name: 'DDP Inspector',
+    id: 'ddp-inspector',
+    mainContentTemplate: 'lai:ddp-inspector',
+    menuContentTemplate: 'lai:ddp-inspector:search',
+    active: true
+  });
+  
+  Constellation.excludeSessionKeysContaining('lai:ddp-inspector');
+  
+}
+
 var DDP_INSPECTOR_PREFIX = 'lai:ddp-inspector';
 var DDP_INSPECTOR_SESSION_ACTIVE_KEY = DDP_INSPECTOR_PREFIX.concat('.active');
-var DDP_INSPECTOR_PANEL_ID = '#ddp-inspector-panel';
+var DDP_INSPECTOR_PANEL_ID = '.ddp-inspector-panel';
 var updatePanelTracker = new Tracker.Dependency();
 var ddpThrottle = null;
 var throttleDDP = function () {
@@ -13,6 +31,10 @@ var throttleDDP = function () {
 };
 var _send = Meteor.connection._send;
 var counter = 0;
+
+var colorize = function (str) {
+  return !!Constellation && Package["constellation:console"].Constellation.colorize(str) || str;
+}
 
 Meteor.connection._send = function (obj) {
   if (obj.msg !== 'ping' && obj.msg !== 'pong') {
@@ -42,6 +64,10 @@ Meteor.connection._stream.on('message', function (message) {
   if (Session.equals(DDP_INSPECTOR_PREFIX + '.console', true)) {
     console.log("Received:\n", obj); 
   }
+});
+
+Blaze.registerHelper('ddpInspectorMessageStr', function () {
+  return (Template.parentData(1) === 'constellation_plugin_ddp-inspector') ? colorize(this.messageStr) : this.messageStr;
 });
 
 Template[DDP_INSPECTOR_PREFIX].created = function () {
@@ -85,9 +111,6 @@ Template[DDP_INSPECTOR_PREFIX].rendered = function () {
 };
 
 Template[DDP_INSPECTOR_PREFIX].helpers({
-  searchInput: function () {
-    return Session.get(DDP_INSPECTOR_PREFIX + '.search');
-  },
   ddpMessages: function () {
     updatePanelTracker.depend();
     // No other way to trigger reactivity for the other session vars
@@ -106,13 +129,27 @@ Template[DDP_INSPECTOR_PREFIX].helpers({
     } else {
       return Template[DDP_INSPECTOR_PREFIX.concat(':unknown')];
     }
+  },
+  searchTemplate: function () {
+	return Template['lai:ddp-inspector:search'];  
+  },
+  constellation: function () {
+	// Widget needs to know whether it's standalone or in Constellation context
+	// So it can shift the search and reset inputs off to the Constellation menu bar
+	return !!Constellation && _.isString(this) && String(this) === 'constellation_plugin_ddp-inspector';
   }
 });
 
 var throttleHandle = null;
 
-Template[DDP_INSPECTOR_PREFIX].events({
-  'keyup #ddp-inspector-search': function (event, template) {
+Template[DDP_INSPECTOR_PREFIX + ':search'].helpers({
+  searchInput: function () {
+    return Session.get(DDP_INSPECTOR_PREFIX + '.search');
+  }
+});
+
+Template[DDP_INSPECTOR_PREFIX + ':search'].events({
+  'keyup .ddp-inspector-search': function (event, template) {
     if (throttleHandle) {
       clearTimeout(throttleHandle);
     }
@@ -121,9 +158,17 @@ Template[DDP_INSPECTOR_PREFIX].events({
       updatePanelTracker.changed();
     }, 300);
   },
-  'click #ddp-inspector-reset': function () {
+  'click .ddp-inspector-reset': function () {
     DDPMessages.remove({});
     updatePanelTracker.changed();
+	// Clear search field
+	// otherwise user who has a current search term may be confused when they press reset
+	// then take a few actions and don't see any messages appearing in their ddp inspector
+	// Balancing this against the possibility of a user wanting to keep a search term in play
+	// after resetting and performing some specific actions that might produce that 
+	// same search term in the DDP messages
+	$('.ddp-inspector-search').val('');
+	Session.setPersistent(DDP_INSPECTOR_PREFIX + '.search', '');
   }
 });
 

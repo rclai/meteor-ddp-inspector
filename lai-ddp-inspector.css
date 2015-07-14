@@ -1,0 +1,112 @@
+.ddp-inspector-reset, #Constellation .ddp-inspector-reset {
+  position: fixed;
+  left: 20%;
+  top: 0;
+  height: 30px;
+  width: 5%;
+}
+
+.ddp-inspector-panel, .ddp-inspector-panel *, #Constellation .ddp-inspector-panel, #Constellation .ddp-inspector-panel * {
+  box-sizing: border-box;
+  font-family: 'Arial';
+}
+
+.ddp-inspector-panel, #constellation-ddp-inspector-panel {
+  position: fixed;
+  top: 30px;
+  left: 0;
+  bottom: 0;
+  width: 25%;
+  overflow: auto;
+  background: #dddddd;
+  font-size: 12px;
+  opacity: 0.9;
+  z-index: 10000000000;
+}
+
+.ddp-inspector-panel pre, #Constellation .ddp-inspector-panel pre {
+  padding: 0;
+  border: 0;
+  background: none;
+  line-height: 1;
+  overflow-y: hidden;
+  margin: 0;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.ddp-message, #Constellation .ddp-message {
+  padding: 5px;
+  background: #f1f1f1;
+  margin-bottom: 3px;
+  max-height: 200px;
+  overflow: hidden;
+  transition: 3s;
+}
+
+.ddp-message.inserted, #Constellation .ddp-message.inserted {
+  background: #BBFDBB;
+}
+
+.ddp-message:hover, #Constellation .ddp-message:hover {
+  background: #d1d1d1;
+  max-height: 9000px;
+}
+
+.ddp-inspector-search, #Constellation .ddp-inspector-search {
+  width: 20%;
+  position: fixed;
+  top: 0;
+  height: 30px;
+  left: 0;
+}
+
+/* Different CSS required for Constellation integration */
+
+#Constellation .ddp-inspector-panel, #Constellation .ddp-inspector-reset, #Constellation .ddp-inspector-search {
+  position: relative;	
+}
+
+#Constellation .ddp-inspector-panel {
+  background: inherit;
+  top: auto;
+  left: auto;
+  width: inherit;	
+}
+
+#Constellation .ddp-inspector-panel .Constellation-docViewer pre {
+  white-space: pre-wrap;	
+}
+
+#Constellation input.ddp-inspector-search {
+  height: inherit !important;
+  color: rgba(0,0,0,0.92);
+  width: 240px;	
+  left: auto;
+  top: auto;
+  font-size: smaller !important;
+  padding-left: 5px !important;
+  float: left;
+}
+
+#Constellation input.ddp-inspector-reset {
+  height: inherit !important;
+  color: rgba(0,0,0,0.92);
+  width: 48px;
+  left: auto;
+  top: auto;
+  font-size: smaller !important;
+  float: right;
+}
+
+#Constellation .ddp-message {
+  padding: 5px;
+  background: rgba(255,255,255,0);
+}
+
+#Constellation .ddp-message:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+#Constellation .Constellation_documentViewer .ddp-message pre {
+  white-space: pre-wrap;
+}
