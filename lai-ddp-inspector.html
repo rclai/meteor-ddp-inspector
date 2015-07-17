@@ -3,6 +3,7 @@
     {{#unless constellation}}{{> searchTemplate}}{{/unless}}
     {{#each ddpMessages}}
       <div class="ddp-message">
+        <div class="ddp-inspector-arrow">{{{arrow}}}</div>
         {{> whichDDPTemplate}}
       </div>
     {{else}}

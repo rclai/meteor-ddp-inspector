@@ -60,6 +60,11 @@
   left: 0;
 }
 
+.ddp-inspector-arrow, #Constellation .ddp-inspector-arrow {
+  float: right;
+  font-weight: bold;
+}
+
 /* Different CSS required for Constellation integration */
 
 #Constellation .ddp-inspector-panel, #Constellation .ddp-inspector-reset, #Constellation .ddp-inspector-search {
@@ -110,4 +115,8 @@
 
 #Constellation .Constellation_documentViewer .ddp-message pre {
   white-space: pre-wrap;
+}
+
+#Constellation .ddp-inspector-arrow {
+  color: #fff;
 }
