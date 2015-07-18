@@ -25,7 +25,7 @@ Package.onUse(function(api) {
     'jquery',
 	'reactive-dict'
   ]);
-  api.use('constellation:console@1.1.3', {weak: true});
+  api.use('constellation:console@1.1.5', {weak: true});
 
   api.addFiles([
     'console-log-polyfill.js',
