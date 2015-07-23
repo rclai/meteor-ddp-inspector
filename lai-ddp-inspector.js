@@ -41,7 +41,7 @@ Meteor.connection._send = function (obj) {
     throttleDDP();
   }
   DDPMessages.insert({
-	arrow: "&#x27A1;",
+	out: true,
     message: obj,
     messageStr: JSON.stringify(obj, null, '  '),
     __order: counter++
@@ -58,7 +58,6 @@ Meteor.connection._stream.on('message', function (message) {
     throttleDDP();
   }
   DDPMessages.insert({
-	arrow: "&#x2B05;",
     message: obj,
     messageStr: JSON.stringify(obj, null, '  '),
     __order: counter++

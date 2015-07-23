@@ -60,9 +60,9 @@
   left: 0;
 }
 
-.ddp-inspector-arrow, #Constellation .ddp-inspector-arrow {
+div.ddp-inspector-arrow, #Constellation div.ddp-inspector-arrow {
   float: right;
-  font-weight: bold;
+  font-size-adjust: 1 !important;
 }
 
 /* Different CSS required for Constellation integration */
@@ -117,6 +117,6 @@
   white-space: pre-wrap;
 }
 
-#Constellation .ddp-inspector-arrow {
+#Constellation div.ddp-inspector-arrow {
   color: #fff;
 }
