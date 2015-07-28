@@ -15,21 +15,31 @@ Search for any DDP message (uses regex searching of a local collection).
 
 ## More Info
 
-The panel will only show you 50 DDP messages at a time, the most recent ones first. 
+#### Limiting Result Set
+The panel will only show you 50 DDP messages at a time, the most recent ones first. If you want to see more DDP messages, simply call `Session.setPersistent('lai:ddp-inspector.limit', YouDesiredNumber);`.
 
-If you want to see more DDP messages, simply call `Session.setPersistent('lai:ddp-inspector.limit', YouDesiredNumber);`.
-
+#### Search Term Persistence
 If you reload, your search will remain in the search box. However, your DDP messages will be gone.
 
+#### Console Log
 By default, the DDP messages are not logged to the console, if you still would like to see them in the console, simply call `Session.setPersistent('lai:ddp-inspector.console', true)`.
 
+#### Legacy Version
 If you want the old school version that only outputs to the console, `meteor add lai:ddp-inspector@0.6.0`.
 
+#### Resetting
 The Reset button is there to clear the local collection of DDP messages in case it gets too big. Clearing it will speed up the search. I am still trying to figure out how to optimize the performance.
+
+#### Integration With Constellation Console
+If you install `constellation:console`, the DDP panel will plug right into it as a new tab. Thanks @JackAdams for this!
 
 ## Credit
 
 This package was made using the code from this [StackOverflow post](http://stackoverflow.com/a/25373867/620010).
+
+## Contributors
+
+@JackAdams
 
 ## Future
 
