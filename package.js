@@ -1,6 +1,6 @@
 Package.describe({
   name: 'lai:ddp-inspector',
-  version: '1.1.5',
+  version: '1.1.6',
   // Brief, one-line summary of the package.
   summary: 'See all DDP activity in the client-side and full-text search them.',
   // URL to the Git repository containing the source code for this package.
@@ -25,7 +25,7 @@ Package.onUse(function(api) {
     'jquery',
 	'reactive-dict'
   ]);
-  api.use('constellation:console@1.2.0', {weak: true});
+  api.use('constellation:console@1.2.1', {weak: true});
 
   api.addFiles([
     'console-log-polyfill.js',
