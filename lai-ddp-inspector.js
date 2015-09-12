@@ -1,9 +1,9 @@
 // Plug in to Constellation UI if Constellation is available
 
 if (!!Package["constellation:console"]) {
-  
+
   var Constellation = Package["constellation:console"].API;
-    
+
   Constellation.addTab({
     name: 'DDP Inspector',
     id: 'ddp-inspector',
@@ -11,9 +11,9 @@ if (!!Package["constellation:console"]) {
     menuContentTemplate: 'lai:ddp-inspector:search',
     active: true
   });
-  
+
   Constellation.excludeSessionKeysContaining('lai:ddp-inspector');
-  
+
 }
 
 var DDP_INSPECTOR_PREFIX = 'lai:ddp-inspector';
@@ -41,18 +41,19 @@ Meteor.connection._send = function (obj) {
     throttleDDP();
   }
   DDPMessages.insert({
-	out: true,
+    out: true,
     message: obj,
     messageStr: JSON.stringify(obj, null, '  '),
     __order: counter++
-  }, function () {});
+  }, function () {
+  });
   if (Session.equals(DDP_INSPECTOR_PREFIX + '.console', true)) {
     console.log("Sent:\n", obj);
   }
   _send.call(this, obj);
 };
 
-Meteor.connection._stream.on('message', function (message) { 
+Meteor.connection._stream.on('message', function (message) {
   var obj = JSON.parse(message);
   if (obj.msg !== 'ping' && obj.msg !== 'pong') {
     throttleDDP();
@@ -61,9 +62,10 @@ Meteor.connection._stream.on('message', function (message) {
     message: obj,
     messageStr: JSON.stringify(obj, null, '  '),
     __order: counter++
-  }, function () {});
+  }, function () {
+  });
   if (Session.equals(DDP_INSPECTOR_PREFIX + '.console', true)) {
-    console.log("Received:\n", obj); 
+    console.log("Received:\n", obj);
   }
 });
 
@@ -95,7 +97,7 @@ Template[DDP_INSPECTOR_PREFIX].created = function () {
     }
     var sessionLimit = Session.get(DDP_INSPECTOR_PREFIX + '.limit');
     var limit = typeof sessionLimit === 'number' ? sessionLimit : 50;
-    self.messages = DDPMessages.find(criteria, { sort: { __order: -1 }, limit: limit, reactive: false }).fetch();
+    self.messages = DDPMessages.find(criteria, {sort: {__order: -1}, limit: limit, reactive: false}).fetch();
   });
 };
 
@@ -104,7 +106,7 @@ Template[DDP_INSPECTOR_PREFIX].rendered = function () {
     insertElement: function (node, next) {
       $(node).addClass('inserted').insertBefore(next);
 
-      setTimeout( function () {
+      setTimeout(function () {
         $(node).removeClass('inserted');
       }, 20);
     },
@@ -132,12 +134,12 @@ Template[DDP_INSPECTOR_PREFIX].helpers({
     }
   },
   searchTemplate: function () {
-	return Template['lai:ddp-inspector:search'];  
+    return Template['lai:ddp-inspector:search'];
   },
   constellation: function () {
-	// Widget needs to know whether it's standalone or in Constellation context
-	// So it can shift the search and reset inputs off to the Constellation menu bar
-	return !!Constellation && _.isString(this) && String(this) === 'constellation_plugin_ddp-inspector';
+    // Widget needs to know whether it's standalone or in Constellation context
+    // So it can shift the search and reset inputs off to the Constellation menu bar
+    return !!Constellation && _.isString(this) && String(this) === 'constellation_plugin_ddp-inspector';
   }
 });
 
@@ -162,14 +164,14 @@ Template[DDP_INSPECTOR_PREFIX + ':search'].events({
   'click .ddp-inspector-reset': function () {
     DDPMessages.remove({});
     updatePanelTracker.changed();
-	// Clear search field
-	// otherwise user who has a current search term may be confused when they press reset
-	// then take a few actions and don't see any messages appearing in their ddp inspector
-	// Balancing this against the possibility of a user wanting to keep a search term in play
-	// after resetting and performing some specific actions that might produce that 
-	// same search term in the DDP messages
-	$('.ddp-inspector-search').val('');
-	Session.setPersistent(DDP_INSPECTOR_PREFIX + '.search', '');
+    // Clear search field
+    // otherwise user who has a current search term may be confused when they press reset
+    // then take a few actions and don't see any messages appearing in their ddp inspector
+    // Balancing this against the possibility of a user wanting to keep a search term in play
+    // after resetting and performing some specific actions that might produce that
+    // same search term in the DDP messages
+    $('.ddp-inspector-search').val('');
+    Session.setPersistent(DDP_INSPECTOR_PREFIX + '.search', '');
   }
 });
 
@@ -179,7 +181,10 @@ Template[DDP_INSPECTOR_PREFIX + ':subscription'].helpers({
     if (message.name) {
       return message.name;
     } else if (message.subs) {
-      return DDPMessages.find({ 'message.msg': 'sub', 'message.id': { $in: message.subs } }, { limit: message.subs.length, reactive: false }).map(function (msg) {
+      return DDPMessages.find({'message.msg': 'sub', 'message.id': {$in: message.subs}}, {
+        limit: message.subs.length,
+        reactive: false
+      }).map(function (msg) {
         return msg.message.name;
       });
     }
@@ -192,11 +197,22 @@ Template[DDP_INSPECTOR_PREFIX + ':method'].helpers({
     if (message.method) {
       return message.method;
     } else if (message.methods) {
-      return DDPMessages.find({ 'message.msg': 'method', 'message.id': { $in: message.methods } }, { limit: message.methods.length, reactive: false }).map(function (msg) {
+      return DDPMessages.find({
+        'message.msg': 'method',
+        'message.id': {$in: message.methods}
+      }, {limit: message.methods.length, reactive: false}).map(function (msg) {
         return msg.message.method;
       });
     } else if (message.msg === 'result' && message.id) {
-      return DDPMessages.findOne({ 'message.msg': 'method', 'message.id': message.id }, { reactive: false }).message.method;
+      var ddpMessage = DDPMessages.findOne({'message.msg': 'method', 'message.id': message.id}, {reactive: false});
+      if (ddpMessage) {
+        return ddpMessage.message.method;
+      } else {
+        // it is possible that the method call was not registered by ddp-inspector.
+        // this happens when the method was called berofe ddp-inspector had the chance to wrap _send().
+        // in that case, we don't know the method name based on the id.
+        return '(unknown method)';
+      }
     }
   }
 });

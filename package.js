@@ -23,7 +23,7 @@ Package.onUse(function(api) {
     'underscore',
     'mousetrap:mousetrap@1.4.6_1',
     'jquery',
-	'reactive-dict'
+    'reactive-dict'
   ]);
   api.use('constellation:console@1.2.1', {weak: true});
 
