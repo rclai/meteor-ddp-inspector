@@ -69,6 +69,33 @@ Meteor.connection._stream.on('message', function (message) {
   }
 });
 
+var methodNameCache = {};
+
+/**
+ * This method fills the method name cache.
+ * The package is loaded after some messages were sent, and possibly some method calls among them.
+ * If a result is received after the package was loaded, we cannot retrieve its name from the
+ * message collection.
+ * Ir the method has an outstanding callback, it also includes the method name, so we can use it
+ * to create a partial cache of such method names.
+ */
+function fillMethodCache() {
+  var blocks = Meteor.connection._outstandingMethodBlocks;
+  if (!_.isEmpty(blocks)) {
+
+    var currentMethodBlock = blocks[0].methods;
+    var m;
+    for (var i = 0; i < currentMethodBlock.length; i++) {
+      m = currentMethodBlock[i];
+      if (m._message && m._message.method) {
+        methodNameCache[m.methodId] = m._message.method;
+      }
+    }
+  }
+}
+
+fillMethodCache();
+
 Blaze.registerHelper('ddpInspectorMessageStr', function () {
   return (Template.parentData(1) === 'constellation_plugin_ddp-inspector') ? colorize(this.messageStr) : this.messageStr;
 });
@@ -207,10 +234,13 @@ Template[DDP_INSPECTOR_PREFIX + ':method'].helpers({
       var ddpMessage = DDPMessages.findOne({'message.msg': 'method', 'message.id': message.id}, {reactive: false});
       if (ddpMessage) {
         return ddpMessage.message.method;
-      } else {
+      } else if (methodNameCache.hasOwnProperty(message.id)) {
         // it is possible that the method call was not registered by ddp-inspector.
         // this happens when the method was called berofe ddp-inspector had the chance to wrap _send().
-        // in that case, we don't know the method name based on the id.
+        // if the method had a callback, we cached the method name earlier...
+        return methodNameCache[message.id];
+      }else{
+        // ...otherwise, we don't know the method name based on the id.
         return '(unknown method)';
       }
     }
