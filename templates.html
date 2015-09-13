@@ -1,13 +1,12 @@
 <template name="lai:ddp-inspector">
   <div class="ddp-inspector-panel" style="{{#unless constellation}}display:none;{{/unless}}">
-    {{#unless constellation}}{{> searchTemplate}}{{/unless}}
-    {{#each ddpMessages}}
-      <div class="ddp-message">
-        <div class="ddp-inspector-arrow">{{#if out}}&rarr;{{else}}&larr;{{/if}}</div>
-        {{> whichDDPTemplate}}
-      </div>
+    {{#unless constellation}}{{> searchTemplate}}{{/unless}} {{#each ddpMessages}}
+    <div class="ddp-message">
+      <div class="ddp-inspector-arrow">{{#if out}}&rarr;{{else}}&larr;{{/if}}</div>
+      {{> whichDDPTemplate}}
+    </div>
     {{else}}
-      <p class="ddp-message">No DDP Messages... yet.</p>
+    <p class="ddp-message">No DDP Messages... yet.</p>
     {{/each}}
   </div>
 </template>
@@ -19,8 +18,7 @@
 
 <template name="lai:ddp-inspector:collection">
   <strong>Collection:</strong>
-  {{message.collection}} -
-  {{message.msg}}
+  {{message.collection}} - {{message.msg}}
   <br>
   <pre>{{{ddpInspectorMessageStr}}}</pre>
 </template>

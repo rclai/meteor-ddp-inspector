@@ -11,7 +11,7 @@ Package.describe({
   debugOnly: true
 });
 
-Package.onUse(function(api) {
+Package.onUse(function (api) {
   api.versionsFrom('1.0');
 
   api.use([
@@ -19,24 +19,26 @@ Package.onUse(function(api) {
     'tracker',
     'templating',
     'session',
-    'u2622:persistent-session@0.3.3',
+    'u2622:persistent-session@0.4.1',
     'underscore',
     'mousetrap:mousetrap@1.4.6_1',
     'jquery',
     'reactive-dict'
   ]);
-  api.use('constellation:console@1.2.1', {weak: true});
+  
+  api.use('constellation:console@1.2.1', {
+    weak: true
+  });
 
   api.addFiles([
+    'templates.html',
+    'styles.css',
     'console-log-polyfill.js',
-    'lai-ddp-inspector.html',
-    'lai-ddp-inspector.css',
-    'lai-ddp-inspector.js'
+    'constants.js',
+    'globals.js',
+    'method-cache.js',
+    'constellation.js',
+    'templates.js',
+    'ddp-inspector.js'
   ], ['client']);
-});
-
-Package.onTest(function(api) {
-  api.use('tinytest');
-  api.use('lai:ddp-inspector');
-  api.addFiles('lai-ddp-inspector-tests.js');
 });
