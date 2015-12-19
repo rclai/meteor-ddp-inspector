@@ -1,6 +1,6 @@
 Package.describe({
   name: 'lai:ddp-inspector',
-  version: '1.1.6',
+  version: '1.1.7',
   // Brief, one-line summary of the package.
   summary: 'See all DDP activity in the client-side and full-text search them.',
   // URL to the Git repository containing the source code for this package.
@@ -19,13 +19,13 @@ Package.onUse(function (api) {
     'tracker',
     'templating',
     'session',
-    'u2622:persistent-session@0.4.1',
+    'u2622:persistent-session@0.4.4',
     'underscore',
     'mousetrap:mousetrap@1.4.6_1',
     'jquery',
     'reactive-dict'
   ]);
-  
+
   api.use('constellation:console@1.2.1', {
     weak: true
   });
