@@ -41,7 +41,7 @@ Meteor.startup(function () {
   Session.setDefaultPersistent(DDP_INSPECTOR_CONSOLE_ENABLED, false);
   Blaze.render(Template[DDP_INSPECTOR_PREFIX], document.body);
   // Initialize hot-key
-  Mousetrap.bind(['command+d', 'ctrl+d'], function () {
+  Mousetrap.bind(['command+d', 'ctrl+d', 'shift+d'], function () {
     $(DDP_INSPECTOR_PANEL_ID).toggle();
     return false;
   });
